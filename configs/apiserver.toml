@@ -1,0 +1,4 @@
+bind_addr = ":8080"
+log_level = "debug"
+database_url = "user=postgres password=serega host=localhost dbname=users sslmode=disable"
+
