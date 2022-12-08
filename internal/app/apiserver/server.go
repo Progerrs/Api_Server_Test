@@ -3,6 +3,7 @@ package apiserver
 import (
 	"awesomeProject/internal/app/store"
 	"fmt"
+	"html/template"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -30,10 +31,18 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (s *server) configureRouter() {
 	s.router.HandleFunc("/users", s.handleUsersCreate())
+	s.router.HandleFunc("/", s.handleHomePage())
+}
+
+func (s *server) handleHomePage() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Home")
+	}
 }
 
 func (s *server) handleUsersCreate() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello World!")
+		temp, _ := template.ParseFiles("static/index.html")
+		temp.Execute(w, nil)
 	}
 }
