@@ -1,10 +1,5 @@
 package teststore
 
-import (
-	"github.com/gopherschool/http-rest-api/internal/app/model"
-	"github.com/gopherschool/http-rest-api/internal/app/store"
-)
-
 // Store ...
 type Store struct {
 	userRepository *UserRepository
@@ -15,7 +10,7 @@ func New() *Store {
 	return &Store{}
 }
 
-// User ...
+/*// User ...
 func (s *Store) User() store.UserRepository {
 	if s.userRepository != nil {
 		return s.userRepository
@@ -27,4 +22,4 @@ func (s *Store) User() store.UserRepository {
 	}
 
 	return s.userRepository
-}
+}*/

@@ -9,7 +9,7 @@ func TestUser(t *testing.T) *User {
 	return &User{
 		FirstName: "Test",
 		LastName:  "Test",
-		BirthDay:  "8-12-2022",
+		BirthDay:  "9-12-2022",
 		Gender:    "Male",
 	}
 }

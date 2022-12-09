@@ -1,8 +1,7 @@
 package teststore
 
 import (
-	"github.com/gopherschool/http-rest-api/internal/app/model"
-	"github.com/gopherschool/http-rest-api/internal/app/store"
+	"awesomeProject/internal/app/model"
 )
 
 // UserRepository ...
@@ -12,7 +11,7 @@ type UserRepository struct {
 }
 
 // Create ...
-func (r *UserRepository) Create(u *model.User) error {
+/*func (r *UserRepository) Create(u *model.User) error {
 	if err := u.Validate(); err != nil {
 		return err
 	}
@@ -26,13 +25,4 @@ func (r *UserRepository) Create(u *model.User) error {
 
 	return nil
 }
-
-// FindByEmail ...
-func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
-	u, ok := r.users[email]
-	if !ok {
-		return nil, store.ErrRecordNotFound
-	}
-
-	return u, nil
-}
+*/
