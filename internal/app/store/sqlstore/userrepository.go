@@ -3,6 +3,7 @@ package sqlstore
 import (
 	"awesomeProject/internal/app/model"
 	"database/sql"
+	"log"
 )
 
 // UserRepository ...
@@ -23,8 +24,29 @@ func (r *UserRepository) Create(u *model.User) error {
 }
 
 // Get ...
-func (r *UserRepository) Get() *sql.Row {
-	return r.store.db.QueryRow("SELECT row_to_json(users) FROM users")
+func (r *UserRepository) Get() []*model.User {
+	rows, err := r.store.db.Query("SELECT id, firstname, lastname, birthday, gender " +
+		"FROM users")
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil
+		}
+
+		return nil
+	}
+	defer rows.Close()
+	users := make([]*model.User, 0)
+	for rows.Next() {
+
+		u := new(model.User)
+		err := rows.Scan(&u.Id, &u.FirstName, &u.LastName, &u.BirthDay, &u.Gender)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		users = append(users, u)
+	}
+	return users
 }
 
 // Delete ...

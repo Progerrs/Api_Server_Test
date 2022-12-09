@@ -4,7 +4,6 @@ import (
 	"awesomeProject/internal/app/model"
 	"awesomeProject/internal/app/store"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -37,7 +36,7 @@ func (s *server) configureRouter() {
 
 func (s *server) handleHomePage() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Home")
+		s.respond(w, r, http.StatusOK, s.store.User().Get())
 	}
 }
 
