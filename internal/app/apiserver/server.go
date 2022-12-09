@@ -31,12 +31,28 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (s *server) configureRouter() {
 	s.router.HandleFunc("/users", s.handleUsersCreate()).Methods("POST")
-	s.router.HandleFunc("/", s.handleHomePage())
+	s.router.HandleFunc("/delete", s.handleUsersDelete()).Methods("POST")
+	s.router.HandleFunc("/update", s.handleUsersUpdate()).Methods("POST")
+	s.router.HandleFunc("/", s.handleHomePage()).Methods("GET")
 }
 
 func (s *server) handleHomePage() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		s.respond(w, r, http.StatusOK, s.store.User().Get())
+	}
+}
+
+func (s *server) handleUsersDelete() http.HandlerFunc {
+	type request struct {
+		Id int `json:"id"`
+	}
+	return func(w http.ResponseWriter, r *http.Request) {
+		req := &request{}
+		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+			s.error(w, r, http.StatusBadRequest, err)
+			return
+		}
+		s.respond(w, r, http.StatusOK, s.store.User().Delete(req.Id))
 	}
 }
 
@@ -66,6 +82,34 @@ func (s *server) handleUsersCreate() http.HandlerFunc {
 		s.respond(w, r, http.StatusCreated, u)
 	}
 
+}
+
+func (s *server) handleUsersUpdate() http.HandlerFunc {
+	type request struct {
+		Id        int    `json:"id"`
+		FirstName string `json:"first-name"`
+		LastName  string `json:"last-name"`
+		BirthDay  string `json:"birth-day"`
+		Gender    string `json:"gender"`
+	}
+	return func(w http.ResponseWriter, r *http.Request) {
+		req := &request{}
+		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+			s.error(w, r, http.StatusBadRequest, err)
+			return
+		}
+		u := &model.User{
+			FirstName: req.FirstName,
+			LastName:  req.LastName,
+			BirthDay:  req.BirthDay,
+			Gender:    req.Gender,
+		}
+		if err := s.store.User().Update(req.Id, u); err != nil {
+			s.error(w, r, http.StatusUnprocessableEntity, nil)
+			return
+		}
+		s.respond(w, r, http.StatusOK, s.store.User().Update(req.Id, u))
+	}
 }
 
 func (s *server) error(w http.ResponseWriter, r *http.Request, code int, err error) {
