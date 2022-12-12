@@ -7,9 +7,9 @@ func TestUser(t *testing.T) *User {
 	t.Helper()
 
 	return &User{
-		FirstName: "Test",
+		FirstName: "First",
 		LastName:  "Test",
-		BirthDay:  "9-12-2022",
+		BirthDay:  "6-25-2012",
 		Gender:    "Male",
 	}
 }

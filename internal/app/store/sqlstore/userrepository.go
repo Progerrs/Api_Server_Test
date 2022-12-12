@@ -31,19 +31,20 @@ func (r *UserRepository) Get() []*model.User {
 		if err == sql.ErrNoRows {
 			return nil
 		}
-
 		return nil
 	}
 	defer rows.Close()
 	users := make([]*model.User, 0)
 	for rows.Next() {
-
 		u := new(model.User)
 		err := rows.Scan(&u.Id, &u.FirstName, &u.LastName, &u.BirthDay, &u.Gender)
 		if err != nil {
 			log.Fatal(err)
 		}
-
+		errConvert := u.BeforeGet()
+		if errConvert != nil {
+			log.Fatal(errConvert)
+		}
 		users = append(users, u)
 	}
 	return users
@@ -56,12 +57,12 @@ func (r *UserRepository) Delete(Id int) *sql.Row {
 }
 
 // Update ...
-func (r *UserRepository) Update(Id int, u *model.User) *sql.Row {
+func (r *UserRepository) Update(Id int, u *model.User) error {
 	return r.store.db.QueryRow("UPDATE users SET firstname = $2, lastname = $3, birthday = $4, gender = $5"+
-		"WHERE id = $1",
+		"WHERE id = $1  RETURNING Id",
 		Id,
 		u.FirstName,
 		u.LastName,
 		u.BirthDay,
-		u.Gender)
+		u.Gender).Scan(&u.Id)
 }

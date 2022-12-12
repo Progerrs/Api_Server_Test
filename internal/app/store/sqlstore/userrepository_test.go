@@ -28,7 +28,7 @@ func TestUserRepository_Delete(t *testing.T) {
 	db, _ := sqlstore.TestDB(t, databaseURL)
 
 	s := sqlstore.New(db)
-	assert.NotNil(t, s.User().Delete(12))
+	assert.NotNil(t, s.User().Delete(20))
 }
 
 func TestUserRepository_Update(t *testing.T) {
@@ -36,5 +36,5 @@ func TestUserRepository_Update(t *testing.T) {
 
 	s := sqlstore.New(db)
 	u := model.TestUser(t)
-	assert.NotNil(t, s.User().Update(13, u))
+	assert.NoError(t, s.User().Update(18, u))
 }

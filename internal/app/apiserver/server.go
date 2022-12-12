@@ -4,9 +4,8 @@ import (
 	"awesomeProject/internal/app/model"
 	"awesomeProject/internal/app/store"
 	"encoding/json"
-	"net/http"
-
 	"github.com/gorilla/mux"
+	"net/http"
 )
 
 type server struct {
@@ -30,10 +29,10 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *server) configureRouter() {
-	s.router.HandleFunc("/users", s.handleUsersCreate()).Methods("POST")
-	s.router.HandleFunc("/delete", s.handleUsersDelete()).Methods("POST")
-	s.router.HandleFunc("/update", s.handleUsersUpdate()).Methods("POST")
-	s.router.HandleFunc("/", s.handleHomePage()).Methods("GET")
+	s.router.HandleFunc("/api/users", s.handleUsersCreate()).Methods("POST")
+	s.router.HandleFunc("/api/delete", s.handleUsersDelete()).Methods("POST")
+	s.router.HandleFunc("/api/update", s.handleUsersUpdate()).Methods("POST")
+	s.router.HandleFunc("/api/", s.handleHomePage()).Methods("GET")
 }
 
 func (s *server) handleHomePage() http.HandlerFunc {
@@ -58,9 +57,9 @@ func (s *server) handleUsersDelete() http.HandlerFunc {
 
 func (s *server) handleUsersCreate() http.HandlerFunc {
 	type request struct {
-		FirstName string `json:"first-name"`
-		LastName  string `json:"last-name"`
-		BirthDay  string `json:"birth-day"`
+		FirstName string `json:"first_name"`
+		LastName  string `json:"last_name"`
+		BirthDay  string `json:"birth_day"`
 		Gender    string `json:"gender"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -87,9 +86,9 @@ func (s *server) handleUsersCreate() http.HandlerFunc {
 func (s *server) handleUsersUpdate() http.HandlerFunc {
 	type request struct {
 		Id        int    `json:"id"`
-		FirstName string `json:"first-name"`
-		LastName  string `json:"last-name"`
-		BirthDay  string `json:"birth-day"`
+		FirstName string `json:"first_name"`
+		LastName  string `json:"last_name"`
+		BirthDay  string `json:"birth_day"`
 		Gender    string `json:"gender"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -104,11 +103,12 @@ func (s *server) handleUsersUpdate() http.HandlerFunc {
 			BirthDay:  req.BirthDay,
 			Gender:    req.Gender,
 		}
+
 		if err := s.store.User().Update(req.Id, u); err != nil {
-			s.error(w, r, http.StatusUnprocessableEntity, nil)
+			s.error(w, r, http.StatusUnprocessableEntity, err)
 			return
 		}
-		s.respond(w, r, http.StatusOK, s.store.User().Update(req.Id, u))
+		s.respond(w, r, http.StatusOK, u)
 	}
 }
 
