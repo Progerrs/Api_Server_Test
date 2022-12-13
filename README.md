@@ -21,4 +21,4 @@ npm run start
 http://localhost:4200/
 ```
 Если у вас перед глазами появилась  такая страница, то поздравляю вас! <br />
-![Alt text](/relative/path/to/img.jpg?raw=true "Main page")
+![Alt text](/MainPage.png?raw=true "Main page")
