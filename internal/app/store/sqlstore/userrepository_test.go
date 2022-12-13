@@ -36,5 +36,5 @@ func TestUserRepository_Update(t *testing.T) {
 
 	s := sqlstore.New(db)
 	u := model.TestUser(t)
-	assert.NoError(t, s.User().Update(18, u))
+	assert.NoError(t, s.User().Update("18", u))
 }

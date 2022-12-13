@@ -57,7 +57,7 @@ func (r *UserRepository) Delete(Id int) *sql.Row {
 }
 
 // Update ...
-func (r *UserRepository) Update(Id int, u *model.User) error {
+func (r *UserRepository) Update(Id string, u *model.User) error {
 	return r.store.db.QueryRow("UPDATE users SET firstname = $2, lastname = $3, birthday = $4, gender = $5"+
 		"WHERE id = $1  RETURNING Id",
 		Id,

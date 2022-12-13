@@ -10,5 +10,5 @@ type UserRepository interface {
 	Create(*model.User) error
 	Get() []*model.User
 	Delete(int) *sql.Row
-	Update(Id int, u *model.User) error
+	Update(Id string, u *model.User) error
 }

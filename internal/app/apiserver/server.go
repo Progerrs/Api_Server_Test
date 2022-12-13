@@ -85,7 +85,7 @@ func (s *server) handleUsersCreate() http.HandlerFunc {
 
 func (s *server) handleUsersUpdate() http.HandlerFunc {
 	type request struct {
-		Id        int    `json:"id"`
+		Id        string `json:"id"`
 		FirstName string `json:"first_name"`
 		LastName  string `json:"last_name"`
 		BirthDay  string `json:"birth_day"`
